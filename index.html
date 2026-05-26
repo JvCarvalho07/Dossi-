@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dossiê OP-2025-ALB-017 — Flipbook</title>
+  <style>
+    :root{
+      --bg:#050302;
+      --panel:rgba(12,8,5,.56);
+      --panelSolid:rgba(12,8,5,.88);
+      --line:rgba(196,154,102,.34);
+      --text:#eadcc6;
+      --muted:#b9a789;
+      --accent:#7e2d24;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:radial-gradient(circle at center,#140d08 0%,#050302 72%);color:var(--text);font-family:Georgia,'Times New Roman',serif;overflow:hidden}
+    body.grabbing{cursor:grabbing;user-select:none}
+
+    .viewport{position:fixed;inset:0;overflow:hidden;touch-action:none;background:radial-gradient(circle at center,#120c08 0%,#020100 74%)}
+    .pageWrap{position:absolute;left:50%;top:50%;transform-origin:center center;will-change:transform;filter:drop-shadow(0 35px 70px rgba(0,0,0,.76));cursor:grab}
+    body.grabbing .pageWrap{cursor:grabbing}
+    .pageImg{display:block;max-width:none;user-select:none;-webkit-user-drag:none;border-radius:16px;background:#211811;box-shadow:0 0 0 1px rgba(255,255,255,.05)}
+    .pageImg.fade{animation:fade .16s ease}
+    @keyframes fade{from{opacity:.25;transform:scale(.985)}to{opacity:1;transform:scale(1)}}
+
+    .topbar{
+      position:fixed;z-index:20;top:12px;left:12px;right:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:9px 12px;border:1px solid var(--line);border-radius:14px;background:var(--panel);
+      backdrop-filter:blur(8px);box-shadow:0 12px 35px rgba(0,0,0,.42);
+      transition:opacity .28s ease, transform .28s ease;
+    }
+    .topbar.hidden{opacity:0;transform:translateY(-115%);pointer-events:none}
+    .title{font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.05;font-size:clamp(13px,1.35vw,21px);text-shadow:0 1px 3px #000}
+    .subtitle{display:block;color:var(--muted);font-size:.72em;letter-spacing:.08em;margin-top:2px}
+    .controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+    button{
+      appearance:none;border:1px solid var(--line);border-radius:10px;background:linear-gradient(#392819,#1d130c);
+      color:var(--text);font:700 15px Georgia,'Times New Roman',serif;padding:9px 13px;cursor:pointer;
+      box-shadow:inset 0 1px rgba(255,255,255,.08),0 4px 14px rgba(0,0,0,.35)
+    }
+    button:hover{filter:brightness(1.18)}
+    .pageCounter{min-width:70px;text-align:center;font-size:19px;color:#dbc49e;font-weight:700}
+
+    .cornerHotspot{position:fixed;z-index:19;top:0;left:0;right:0;height:18px;background:transparent}
+    .smallControls{
+      position:fixed;z-index:18;right:16px;top:16px;display:flex;gap:8px;opacity:.14;transition:opacity .2s ease;
+    }
+    .smallControls:hover{opacity:1}
+    .smallControls button{padding:7px 10px;font-size:13px;background:rgba(28,18,11,.75)}
+
+    .zoomDock{
+      position:fixed;z-index:22;left:16px;bottom:16px;display:flex;gap:10px;align-items:center;
+      padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--panel);
+      backdrop-filter:blur(8px);transition:opacity .25s ease, transform .25s ease;
+    }
+    .zoomDock.hidden{opacity:0;transform:translateY(120%);pointer-events:none}
+    input[type=range]{width:170px;accent-color:#8c342b}
+    .zoomValue{min-width:54px;color:var(--muted);font-weight:700}
+
+    .thumbToggle{position:fixed;right:16px;bottom:16px;z-index:24;transition:opacity .25s ease}.thumbToggle.hidden{opacity:.12}
+    .thumbs{
+      position:fixed;z-index:23;right:16px;bottom:74px;max-height:calc(100vh - 96px);width:118px;
+      display:none;flex-direction:column;gap:9px;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--panelSolid);backdrop-filter:blur(8px);overflow:auto;
+    }
+    .thumbs.open{display:flex}
+    .thumb{border:1px solid rgba(196,154,102,.28);padding:2px;border-radius:8px;background:#160f0a;cursor:pointer;opacity:.72;transition:.16s}
+    .thumb:hover,.thumb.active{opacity:1;border-color:#8c342b;transform:translateX(-2px)}
+    .thumb img{display:block;width:100%;border-radius:5px}.thumb span{display:block;text-align:center;font-size:12px;color:#ccb891;padding:2px 0 0}
+
+    .help{
+      position:fixed;z-index:30;inset:auto 16px 74px auto;width:min(410px,calc(100vw - 32px));
+      display:none;padding:15px;border:1px solid var(--line);border-radius:14px;background:var(--panelSolid);box-shadow:0 20px 60px rgba(0,0,0,.7)
+    }
+    .help.open{display:block}.help h3{margin:0 0 8px;font-size:18px}.help p{margin:8px 0;color:var(--muted);line-height:1.35}
+
+    @media (max-width:760px){
+      .topbar{left:8px;right:8px;top:8px;align-items:flex-start}.controls{gap:6px}.title{font-size:13px}button{font-size:13px;padding:8px 9px}.pageCounter{font-size:15px;min-width:50px}.zoomDock{left:8px;bottom:8px}.thumbToggle{right:8px;bottom:8px}.thumbs{right:8px;bottom:62px;width:92px}.smallControls{right:8px;top:8px}
+    }
+  </style>
+</head>
+<body>
+  <main class="viewport" id="viewport">
+    <div class="pageWrap" id="pageWrap"><img class="pageImg" id="pageImg" draggable="false" alt="Página do dossiê" /></div>
+  </main>
+
+  <div class="cornerHotspot" id="hotspot"></div>
+  <div class="smallControls" id="smallControls"><button id="showUiBtn">Menu</button></div>
+
+  <div class="topbar" id="topbar">
+    <div class="title">Dossiê OP-2025-ALB-017<span class="subtitle">relatório de missão — flipbook interativo</span></div>
+    <div class="controls">
+      <button id="prevBtn">◀ Anterior</button>
+      <div class="pageCounter"><span id="pageNum">1</span> / <span id="pageTotal">10</span></div>
+      <button id="nextBtn">Próxima ▶</button>
+      <button id="fitBtn">Ajustar</button>
+      <button id="fsBtn">Tela cheia</button>
+      <button id="helpBtn">?</button>
+    </div>
+  </div>
+
+  <div class="zoomDock" id="zoomDock">
+    <span>Zoom</span><input id="zoomRange" type="range" min="35" max="500" value="100" /><span class="zoomValue" id="zoomValue">100%</span>
+  </div>
+  <button class="thumbToggle" id="thumbToggle">Páginas</button>
+  <div class="thumbs" id="thumbs"></div>
+  <section class="help" id="help">
+    <h3>Controles</h3>
+    <p><b>Zoom:</b> roda do mouse/trackpad, slider ou duplo clique. O máximo agora é 500%.</p>
+    <p><b>Mover:</b> clique e arraste a página para qualquer direção.</p>
+    <p><b>Páginas:</b> setas do teclado, botões Anterior/Próxima ou miniaturas.</p>
+    <p><b>Menu:</b> ele some completamente para não cobrir a imagem. Passe o mouse no topo ou clique em Menu.</p>
+  </section>
+
+  <script>
+    const pages = [
+      'images/01-capa.png','images/02-dados-missao.png','images/03-origem-contexto.png','images/04-area-operacao.png','images/05-lena-vasic.png','images/06-orest-krum.png','images/07-danilo-ferre.png','images/08-objetivos.png','images/09-diretrizes.png','images/10-observacoes-finais.png'
+    ];
+    const viewport = document.getElementById('viewport');
+    const wrap = document.getElementById('pageWrap');
+    const img = document.getElementById('pageImg');
+    const pageNum = document.getElementById('pageNum');
+    const pageTotal = document.getElementById('pageTotal');
+    const zoomRange = document.getElementById('zoomRange');
+    const zoomValue = document.getElementById('zoomValue');
+    const thumbs = document.getElementById('thumbs');
+    const topbar = document.getElementById('topbar');
+    const zoomDock = document.getElementById('zoomDock');
+    const thumbToggle = document.getElementById('thumbToggle');
+    const help = document.getElementById('help');
+    const hotspot = document.getElementById('hotspot');
+    const showUiBtn = document.getElementById('showUiBtn');
+    pageTotal.textContent = pages.length;
+
+    let index = 0, fitScale = 1, readingScale = 1, scale = 1, x = 0, y = 0, baseW = 1, baseH = 1;
+    let dragging = false, startX=0, startY=0, startPX=0, startPY=0, moved=false;
+    let uiTimer;
+
+    function fit(){
+      const vw = viewport.clientWidth, vh = viewport.clientHeight;
+      fitScale = Math.min((vw * 0.92) / baseW, (vh * 0.92) / baseH);
+      readingScale = fitScale * 1.5; // 100% = antigo 150%
+      scale = readingScale;
+      x = 0; y = 0;
+      clampPan(); update();
+    }
+    function update(){
+      wrap.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${scale})`;
+      const pct = Math.round(scale / readingScale * 100);
+      zoomRange.value = Math.max(35, Math.min(500, pct));
+      zoomValue.textContent = `${pct}%`;
+    }
+    function clampPan(){
+      const vw = viewport.clientWidth, vh = viewport.clientHeight;
+      const w = baseW * scale, h = baseH * scale;
+      const maxX = Math.max(vw * .65, (w - vw) / 2 + vw * .12);
+      const maxY = Math.max(vh * .65, (h - vh) / 2 + vh * .12);
+      x = Math.max(-maxX, Math.min(maxX, x));
+      y = Math.max(-maxY, Math.min(maxY, y));
+    }
+    function loadPage(i){
+      index = (i + pages.length) % pages.length;
+      img.classList.remove('fade'); void img.offsetWidth; img.classList.add('fade');
+      img.onload = () => { baseW = img.naturalWidth; baseH = img.naturalHeight; img.width = baseW; img.height = baseH; fit(); };
+      img.src = pages[index];
+      pageNum.textContent = index + 1;
+      [...thumbs.children].forEach((t,n)=>t.classList.toggle('active', n===index));
+      showUI(1600);
+    }
+    function next(){ loadPage(index+1); }
+    function prev(){ loadPage(index-1); }
+    function setZoomPercent(pct, clientX, clientY){
+      const old = scale;
+      const nextScale = readingScale * (pct / 100);
+      const rect = viewport.getBoundingClientRect();
+      const cx = clientX ?? (rect.left + rect.width/2);
+      const cy = clientY ?? (rect.top + rect.height/2);
+      const ox = cx - (rect.left + rect.width/2) - x;
+      const oy = cy - (rect.top + rect.height/2) - y;
+      scale = Math.max(readingScale*.35, Math.min(readingScale*5, nextScale));
+      const ratio = scale / old;
+      x = (cx - (rect.left + rect.width/2)) - ox * ratio;
+      y = (cy - (rect.top + rect.height/2)) - oy * ratio;
+      clampPan(); update();
+    }
+
+    viewport.addEventListener('wheel', e => {
+      e.preventDefault();
+      const pct = Math.round(scale / readingScale * 100);
+      const delta = e.deltaY < 0 ? 15 : -15;
+      setZoomPercent(Math.max(35, Math.min(500, pct + delta)), e.clientX, e.clientY);
+      hideUISoon(700);
+    }, {passive:false});
+    viewport.addEventListener('pointerdown', e => {
+      dragging = true; moved=false; viewport.setPointerCapture(e.pointerId); document.body.classList.add('grabbing');
+      startX = e.clientX; startY = e.clientY; startPX = x; startPY = y;
+      hideUINow();
+    });
+    viewport.addEventListener('pointermove', e => {
+      if(!dragging) return;
+      const dx = e.clientX - startX, dy = e.clientY - startY;
+      if(Math.abs(dx)+Math.abs(dy) > 2) moved=true;
+      x = startPX + dx; y = startPY + dy; clampPan(); update();
+    });
+    function stopDrag(){ dragging=false; document.body.classList.remove('grabbing'); }
+    viewport.addEventListener('pointerup', stopDrag); viewport.addEventListener('pointercancel', stopDrag);
+    viewport.addEventListener('dblclick', e => {
+      const pct = Math.round(scale / readingScale * 100);
+      setZoomPercent(pct < 170 ? 220 : 100, e.clientX, e.clientY);
+    });
+
+    document.getElementById('nextBtn').onclick = next;
+    document.getElementById('prevBtn').onclick = prev;
+    document.getElementById('fitBtn').onclick = fit;
+    document.getElementById('fsBtn').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+    document.getElementById('helpBtn').onclick = () => { help.classList.toggle('open'); showUI(5000); };
+    document.getElementById('thumbToggle').onclick = () => { thumbs.classList.toggle('open'); showUI(3000); };
+    zoomRange.addEventListener('input', e => setZoomPercent(Number(e.target.value)));
+    window.addEventListener('resize', fit);
+    window.addEventListener('keydown', e => {
+      if(e.key === 'ArrowRight') next();
+      if(e.key === 'ArrowLeft') prev();
+      if(e.key === '0') fit();
+      if(e.key === 'm' || e.key === 'M') showUI(3000);
+      if(e.key === 'Escape') { thumbs.classList.remove('open'); help.classList.remove('open'); hideUISoon(200); }
+    });
+
+    function showUI(ms=2200){
+      topbar.classList.remove('hidden'); zoomDock.classList.remove('hidden'); thumbToggle.classList.remove('hidden');
+      clearTimeout(uiTimer); uiTimer = setTimeout(hideUINow, ms);
+    }
+    function hideUISoon(ms=800){ clearTimeout(uiTimer); uiTimer = setTimeout(hideUINow, ms); }
+    function hideUINow(){
+      if(thumbs.classList.contains('open') || help.classList.contains('open')) return;
+      topbar.classList.add('hidden'); zoomDock.classList.add('hidden'); thumbToggle.classList.add('hidden');
+    }
+    hotspot.addEventListener('mouseenter', () => showUI(3000));
+    showUiBtn.addEventListener('click', () => showUI(4000));
+
+    pages.forEach((src,i)=>{
+      const div=document.createElement('div'); div.className='thumb'; div.innerHTML=`<img src="${src}" alt="Página ${i+1}"><span>${i+1}</span>`; div.onclick=()=>{loadPage(i); thumbs.classList.remove('open')}; thumbs.appendChild(div);
+    });
+    loadPage(0);
+    setTimeout(hideUINow, 1400);
+  </script>
+</body>
+</html>
