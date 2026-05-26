@@ -18,7 +18,9 @@
     html,body{height:100%;margin:0;background:radial-gradient(circle at center,#140d08 0%,#050302 72%);color:var(--text);font-family:Georgia,'Times New Roman',serif;overflow:hidden}
     body.grabbing{cursor:grabbing;user-select:none}
 
-    .viewport{position:fixed;inset:0;overflow:hidden;touch-action:none;background:radial-gradient(circle at center,#120c08 0%,#020100 74%)}
+    .viewport{position:fixed;inset:0;overflow:hidden;touch-action:none;background:#050302}
+    .bgLayer{position:absolute;inset:0;background-position:center center;background-repeat:no-repeat;background-size:cover;filter:saturate(.95) brightness(.9);transition:opacity .24s ease}
+    .bgShade{position:absolute;inset:0;background:radial-gradient(circle at center, rgba(8,5,3,.12) 0%, rgba(4,2,1,.58) 80%, rgba(2,1,0,.82) 100%);pointer-events:none}
     .pageWrap{position:absolute;left:50%;top:50%;transform-origin:center center;will-change:transform;filter:drop-shadow(0 35px 70px rgba(0,0,0,.76));cursor:grab}
     body.grabbing .pageWrap{cursor:grabbing}
     .pageImg{display:block;max-width:none;user-select:none;-webkit-user-drag:none;border-radius:16px;background:#211811;box-shadow:0 0 0 1px rgba(255,255,255,.05)}
@@ -83,6 +85,8 @@
 </head>
 <body>
   <main class="viewport" id="viewport">
+    <div class="bgLayer" id="bgLayer"></div>
+    <div class="bgShade"></div>
     <div class="pageWrap" id="pageWrap"><img class="pageImg" id="pageImg" draggable="false" alt="Página do dossiê" /></div>
   </main>
 
@@ -96,6 +100,7 @@
       <div class="pageCounter"><span id="pageNum">1</span> / <span id="pageTotal">10</span></div>
       <button id="nextBtn">Próxima ▶</button>
       <button id="fitBtn">Ajustar</button>
+      <button id="bgBtn">Fundo: Madeira</button>
       <button id="fsBtn">Tela cheia</button>
       <button id="helpBtn">?</button>
     </div>
@@ -112,6 +117,7 @@
     <p><b>Mover:</b> clique e arraste a página para qualquer direção.</p>
     <p><b>Páginas:</b> setas do teclado, botões Anterior/Próxima ou miniaturas.</p>
     <p><b>Menu:</b> ele some completamente para não cobrir a imagem. Passe o mouse no topo ou clique em Menu.</p>
+    <p><b>Fundo:</b> use o botão <i>Fundo</i> para alternar entre Madeira, Mesa investigativa e Couro escuro.</p>
   </section>
 
   <script>
@@ -133,6 +139,20 @@
     const hotspot = document.getElementById('hotspot');
     const showUiBtn = document.getElementById('showUiBtn');
     pageTotal.textContent = pages.length;
+    const bgLayer = document.getElementById('bgLayer');
+    const backgrounds = [
+      {name:'Madeira', src:'backgrounds/madeira.png'},
+      {name:'Mesa', src:'backgrounds/mesa.png'},
+      {name:'Couro', src:'backgrounds/couro.png'}
+    ];
+    let bgIndex = Number(localStorage.getItem('dossieBgIndex') || 0);
+    if(!Number.isFinite(bgIndex) || bgIndex < 0 || bgIndex >= backgrounds.length) bgIndex = 0;
+    function applyBackground(){
+      const bg = backgrounds[bgIndex];
+      bgLayer.style.backgroundImage = `url('${bg.src}')`;
+      document.getElementById('bgBtn').textContent = `Fundo: ${bg.name}`;
+      localStorage.setItem('dossieBgIndex', String(bgIndex));
+    }
 
     let index = 0, fitScale = 1, readingScale = 1, scale = 1, x = 0, y = 0, baseW = 1, baseH = 1;
     let dragging = false, startX=0, startY=0, startPX=0, startPY=0, moved=false;
@@ -214,6 +234,7 @@
     document.getElementById('nextBtn').onclick = next;
     document.getElementById('prevBtn').onclick = prev;
     document.getElementById('fitBtn').onclick = fit;
+    document.getElementById('bgBtn').onclick = () => { bgIndex = (bgIndex + 1) % backgrounds.length; applyBackground(); showUI(2500); };
     document.getElementById('fsBtn').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
     document.getElementById('helpBtn').onclick = () => { help.classList.toggle('open'); showUI(5000); };
     document.getElementById('thumbToggle').onclick = () => { thumbs.classList.toggle('open'); showUI(3000); };
@@ -242,6 +263,7 @@
     pages.forEach((src,i)=>{
       const div=document.createElement('div'); div.className='thumb'; div.innerHTML=`<img src="${src}" alt="Página ${i+1}"><span>${i+1}</span>`; div.onclick=()=>{loadPage(i); thumbs.classList.remove('open')}; thumbs.appendChild(div);
     });
+    applyBackground();
     loadPage(0);
     setTimeout(hideUINow, 1400);
   </script>
