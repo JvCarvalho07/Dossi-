@@ -1,8 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" fill="none">
-  <path d="M99 221c-9-22-10-38-8-70 2-26 8-41 26-42 18-1 29 12 28 34-1 25 3 39 16 59" stroke="#b74b3c" stroke-width="7" stroke-linecap="round"/>
-  <path d="M72 210c-8-22-11-43-8-72 4-38 23-62 55-61 32 1 54 26 54 62 0 21 4 40 12 55" stroke="#b74b3c" stroke-width="7" stroke-linecap="round"/>
-  <path d="M47 196c-6-18-10-42-7-70 5-48 35-80 78-79 44 1 81 35 81 87" stroke="#b74b3c" stroke-width="7" stroke-linecap="round"/>
-  <path d="M22 176c-6-29-3-58 10-83 18-36 50-57 88-56 37 1 68 20 88 53" stroke="#b74b3c" stroke-width="7" stroke-linecap="round"/>
-  <path d="M125 221c-10-24-13-49-11-81" stroke="#b74b3c" stroke-width="7" stroke-linecap="round"/>
-  <path d="M99 37c31-4 60 6 83 30" stroke="#b74b3c" stroke-width="7" stroke-linecap="round" opacity=".65"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 280" fill="none">
+  <defs>
+    <linearGradient id="fpStroke" x1="38" y1="24" x2="195" y2="246" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f6c18f"/>
+      <stop offset="0.45" stop-color="#cf7056"/>
+      <stop offset="1" stop-color="#8d3027"/>
+    </linearGradient>
+    <radialGradient id="fpGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(121 139) rotate(90) scale(126 108)">
+      <stop offset="0" stop-color="#ffd7ab" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#ffd7ab" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <ellipse cx="120" cy="140" rx="92" ry="116" fill="url(#fpGlow)"/>
+  <g filter="url(#softGlow)" stroke="url(#fpStroke)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M121 248c-10-18-14-37-14-66 0-23 5-42 19-53 9-8 20-12 31-12 25 0 42 20 42 48 0 18 4 35 14 53" stroke-width="7.2"/>
+    <path d="M90 239c-11-20-17-43-17-72 0-58 34-94 82-94 47 0 81 35 81 86 0 19 4 35 12 49" stroke-width="7.2" opacity="0.98"/>
+    <path d="M60 219c-11-22-18-47-18-78 0-73 46-121 110-121 59 0 107 43 107 102" stroke-width="7" opacity="0.92"/>
+    <path d="M41 188c-8-19-12-39-12-61 0-78 54-135 126-135 35 0 67 13 92 37" stroke-width="6.4" opacity="0.78"/>
+    <path d="M147 248c-12-24-16-49-16-81 0-16 2-29 7-39" stroke-width="6.8"/>
+    <path d="M117 28c17-6 35-7 53-3 14 3 27 9 39 19" stroke-width="6.2" opacity="0.68"/>
+    <path d="M83 195c-5-12-8-23-8-39 0-18 4-33 13-45 8-11 20-17 33-17 27 0 44 22 44 52 0 24 5 45 18 66" stroke-width="5.7" opacity="0.66"/>
+    <path d="M107 227c-8-14-11-28-11-49 0-16 3-28 10-37 5-7 12-10 21-10 18 0 29 15 29 35 0 20 4 38 13 57" stroke-width="5.2" opacity="0.62"/>
+  </g>
 </svg>
