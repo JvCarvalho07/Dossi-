@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verificação biométrica — Acesso negado</title>
+  <link rel="stylesheet" href="css/auth-denied.css" />
+</head>
+<body>
+  <main class="auth-page">
+    <section class="auth-shell" aria-label="Verificação biométrica negada">
+      <img class="auth-watermark" src="assets/ordo-mark-parchment.png" alt="" aria-hidden="true" />
+      <header class="auth-head">
+        <div class="brand">
+          <img class="logo" src="assets/ordo-logo-parchment.png" alt="Ordo Realitas" />
+          <div><div class="kicker">Protocolo de acesso biométrico</div><h1>Validação de credencial</h1></div>
+        </div>
+        <div class="status">Nível exigido<strong id="requiredLevel">--</strong></div>
+      </header>
+      <div class="auth-grid">
+        <section class="panel info">
+          <div><div class="label">Arquivo solicitado</div><div class="code" id="fileCode">--</div><div class="title" id="fileTitle">Carregando registro</div></div>
+          <div class="subtitle" id="fileSubtitle">Consultando índice centralizado.</div>
+          <div class="meta"><div><small>Estado</small><b>Bloqueado</b></div><div><small>Credencial</small><b>Insuficiente</b></div><div><small>Consulta</small><b>Negada</b></div></div>
+
+          <div class="seal-profile" id="sealProfile" aria-label="Diagnóstico do lacre">
+            <div class="seal-profile-head">
+              <span>Diagnóstico do lacre</span>
+              <strong id="sealRisk">--</strong>
+            </div>
+            <p id="sealReason">Aguardando leitura do índice central.</p>
+            <div class="seal-readouts">
+              <div><small>Integridade</small><b id="sealIntegrity">--</b></div>
+              <div><small>Última tentativa</small><b id="sealAttempt">--</b></div>
+            </div>
+            <div class="seal-fragments" id="sealFragments"></div>
+          </div>
+          <div class="log" id="authLog"><div>terminal delta inicializado</div><div>credencial temporária detectada</div><div>arquivo protegido por restrição superior</div><div>aguardando impressão digital do operador autorizado</div></div>
+          <div class="tip">Este procedimento é uma simulação diegética para a mesa. Nenhuma biometria real é capturada.</div>
+        </section>
+        <section class="panel reader">
+          <div class="reader-label">Leitor biométrico local</div>
+          <div class="auth-state" id="authState">Aguardando leitura</div>
+          <div class="finger-frame ready" id="authFingerFrame" role="button" tabindex="0" aria-label="Toque para iniciar a leitura biométrica">
+            <span class="reader-grid" aria-hidden="true"></span>
+            <span class="rings" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            <img id="authFinger" src="assets/fingerprint-ordem.png" alt="Leitor de impressão digital" />
+            <span class="scanbar" aria-hidden="true"></span>
+          </div>
+          <div class="progress"><span id="bar"></span></div>
+          <div class="progress-meta"><span id="percent">0%</span><span id="step">Operador não identificado</span></div>
+          <div class="readouts"><div class="readout"><small>Confiança</small><strong id="confidence">--</strong></div><div class="readout"><small>Compatibilidade</small><strong id="match">--</strong></div></div>
+          <div class="mini" id="mini">Toque na digital ou use o botão abaixo</div>
+          <div class="actions"><button class="btn" id="startBtn">Iniciar verificação</button></div>
+        </section>
+      </div>
+      <div class="stamp" id="stamp">Acesso negado</div>
+      <a class="back" href="index.html">‹ retornar ao arquivo central</a>
+    </section>
+  </main>
+  <script src="data/records.js" defer></script>
+  <script src="js/records-store.js" defer></script>
+  <script src="js/auth-denied.js" defer></script>
+</body>
+</html>

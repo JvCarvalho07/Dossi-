@@ -5,58 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ordo Realitas — Arquivo Central</title>
   <meta name="theme-color" content="#030201" />
-  <style>
-    :root{
-      --void:#030201;
-      --black:#070403;
-      --panel:#0d0805;
-      --panel2:#160d08;
-      --paper:#eadbb5;
-      --paper2:#c9aa6f;
-      --muted:#806942;
-      --faint:#453721;
-      --blood:#a63a32;
-      --blood2:#e35b4d;
-      --green:#a9bd80;
-      --line:rgba(201,170,111,.30);
-      --soft:rgba(201,170,111,.12);
-      --redline:rgba(166,58,50,.34);
-      --mono:"Courier New",ui-monospace,monospace;
-      --serif:Georgia,"Times New Roman",serif;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;overflow:hidden;background:var(--void);color:var(--paper);font-family:var(--serif)}
-    body::before{content:"";position:fixed;inset:0;z-index:-4;background:linear-gradient(90deg,rgba(0,0,0,.94),rgba(0,0,0,.66),rgba(0,0,0,.92)),url('arquivos/operacao-albania/backgrounds/mesa.webp') center/cover no-repeat;filter:brightness(.37) saturate(.72)}
-    body::after{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.62) 100%),repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 5px);opacity:.22;mix-blend-mode:screen}
-    button,a,input{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
-
-    .app{height:100svh;padding:14px clamp(18px,2vw,34px);display:grid;grid-template-rows:34px 1fr 22px;gap:10px;min-height:0}
-    .top,.foot{width:min(1580px,100%);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.13em;font-size:.62rem;color:var(--muted);white-space:nowrap}
-    .top strong{font-family:var(--serif);font-size:1.32rem;color:var(--paper);letter-spacing:.13em;text-shadow:0 2px 0 #000}.crumb{opacity:.68}.led{display:inline-flex;gap:5px;margin-left:10px}.led i{width:5px;height:11px;border:1px solid rgba(166,58,50,.55)}.led i.on{background:var(--blood);border-color:var(--blood);box-shadow:0 0 12px rgba(227,91,77,.35)}
-
-    .terminal{width:min(1580px,100%);min-height:0;margin:0 auto;border:1px solid var(--line);background:linear-gradient(180deg,rgba(12,7,5,.96),rgba(4,3,2,.99));box-shadow:0 34px 110px rgba(0,0,0,.72);position:relative;overflow:hidden;display:grid;grid-template-columns:300px minmax(0,1fr)}
-    .terminal::before{content:"";position:absolute;inset:10px;border:1px solid rgba(201,170,111,.055);pointer-events:none;z-index:5}
-    .terminal::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,rgba(201,170,111,.018) 0 1px,transparent 1px 86px);opacity:.32}
-    .corner{position:absolute;width:25px;height:25px;z-index:6}.tl{top:-1px;left:-1px;border-top:1px solid var(--paper2);border-left:1px solid var(--paper2)}.tr{top:-1px;right:-1px;border-top:1px solid var(--paper2);border-right:1px solid var(--paper2)}.bl{bottom:-1px;left:-1px;border-bottom:1px solid var(--paper2);border-left:1px solid var(--paper2)}.br{bottom:-1px;right:-1px;border-bottom:1px solid var(--paper2);border-right:1px solid var(--paper2)}
-
-    .directory{position:relative;z-index:2;min-height:0;border-right:1px solid var(--soft);display:grid;grid-template-rows:auto auto auto 1fr;background:linear-gradient(180deg,rgba(12,7,5,.72),rgba(1,1,1,.22))}
-    .dir-head{height:50px;border-bottom:1px solid var(--soft);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 15px}.label{font-family:var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--paper2);font-size:.64rem}.subtle{font-family:var(--mono);letter-spacing:.095em;text-transform:uppercase;color:var(--muted);font-size:.55rem}
-    .search{height:40px;margin:14px 14px 10px;border:1px solid var(--soft);background:rgba(0,0,0,.24);display:flex;align-items:center;padding:0 10px;gap:8px;position:relative;z-index:1}.search span{font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--paper2);white-space:nowrap}.search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--paper);font-family:var(--mono);font-size:.69rem;letter-spacing:.03em}.search input::placeholder{color:#7c6b4f}
-    .filters{display:flex;gap:6px;padding:0 14px 11px;position:relative;z-index:1}.filter{height:28px;flex:1;border:1px solid var(--soft);background:rgba(0,0,0,.24);color:var(--paper2);font-family:var(--mono);font-size:.53rem;letter-spacing:.08em;text-transform:uppercase}.filter.active,.filter:hover{background:rgba(69,37,22,.52);border-color:var(--line);color:var(--paper)}
-    .file-list{min-height:0;overflow:auto;display:grid;align-content:start;gap:7px;padding:0 14px 12px;scrollbar-width:thin;scrollbar-color:var(--blood) rgba(201,170,111,.08);position:relative;z-index:1}.file-item{width:100%;min-height:64px;border:1px solid var(--soft);background:rgba(0,0,0,.16);display:grid;grid-template-columns:12px 1fr;gap:10px;align-items:center;padding:9px 10px;text-align:left;color:var(--paper);position:relative;overflow:hidden}.file-item:hover{border-color:rgba(201,170,111,.28);background:rgba(255,255,255,.018)}.file-item.active{border-color:rgba(201,170,111,.58);background:linear-gradient(90deg,rgba(54,30,18,.66),rgba(0,0,0,.2));box-shadow:inset 3px 0 0 var(--paper2),0 0 18px rgba(201,170,111,.07)}.dot{width:7px;height:7px;border:1px solid var(--blood);transform:rotate(45deg);opacity:.72}.file-item.active .dot{background:var(--paper2);border-color:var(--paper2);box-shadow:0 0 14px rgba(201,170,111,.45)}.file-main{min-width:0;display:grid;gap:4px}.file-top{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}.file-code{font-family:var(--mono);font-size:.61rem;letter-spacing:.08em;color:var(--paper2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.file-name{font-size:.93rem;line-height:1.05;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.file-badge{padding:2px 6px;border:1px solid rgba(201,170,111,.22);font-family:var(--mono);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}.file-badge.alert{border-color:rgba(166,58,50,.35);color:var(--blood2)}.file-badge.locked{border-color:rgba(169,189,128,.28);color:#b9cf8f}.file-badge.principal{border-color:rgba(201,170,111,.4);background:rgba(201,170,111,.08);color:var(--paper)}
-
-    .mission{position:relative;z-index:2;min-height:0;display:grid;grid-template-rows:auto 1fr}.mission-top{height:50px;border-bottom:1px solid var(--soft);display:flex;align-items:center;gap:14px;padding:0 18px}.mission-grid{min-height:0;padding:22px 24px;display:grid;grid-template-columns:minmax(520px,1fr) 300px;gap:22px;align-items:center}.mission-copy{min-width:0;display:grid;gap:12px;align-content:center;position:relative;max-width:700px}.mission-copy::after{content:"";position:absolute;right:-6px;top:54%;width:210px;height:210px;border:1px solid rgba(201,170,111,.04);border-radius:50%;background:radial-gradient(circle,rgba(201,170,111,.02),transparent 62%);opacity:.55;pointer-events:none}.kicker{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--paper2)}.mission-code{font-family:var(--mono);font-size:clamp(1.35rem,2.2vw,2.45rem);letter-spacing:.09em;color:var(--blood2);line-height:1}.mission-title{font-size:clamp(2.55rem,4.45vw,4.55rem);letter-spacing:.035em;text-transform:uppercase;line-height:.9;color:var(--paper);text-shadow:0 3px 0 #000;max-width:10ch}.mission-sub{font-family:var(--mono);font-size:.84rem;letter-spacing:.04em;color:var(--paper2);margin-top:0;max-width:520px}.mission-note{max-width:560px;border-top:1px solid var(--soft);border-bottom:1px solid var(--soft);padding:13px 0;display:grid;gap:7px}.note-line{font-family:var(--mono);font-size:.83rem;color:#d9c795;line-height:1.45}.note-line::before{content:"> ";color:var(--blood2)}.note-line b{color:#fff;font-weight:700}.actions{display:flex;align-items:center;gap:14px;margin-top:8px}.btn{height:48px;padding:0 23px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(58,35,20,.84),rgba(10,6,4,.94));color:var(--paper);font-family:var(--mono);font-size:.94rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;min-width:252px}.btn:hover{border-color:rgba(234,219,181,.65);filter:brightness(1.1)}.btn.dark{background:rgba(0,0,0,.22);font-weight:500;color:var(--paper2);pointer-events:none;opacity:.62}
-    .visual-strip{height:46px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:4px;border:1px solid var(--soft);max-width:560px}.strip-cell{display:grid;align-content:center;padding:0 12px;border-right:1px solid var(--soft);background:rgba(0,0,0,.12)}.strip-cell:last-child{border-right:0}.strip-cell small{font-family:var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-size:.49rem}.strip-cell b{font-family:var(--mono);letter-spacing:.04em;font-size:.72rem;color:var(--paper2);font-weight:400}.strip-cell.alert b{color:var(--blood2)}
-    .preview{height:min(62vh,470px);min-height:348px;border:1px solid rgba(201,170,111,.16);background:linear-gradient(180deg,rgba(17,10,6,.28),rgba(0,0,0,.14));display:grid;place-items:center;position:relative;overflow:hidden;box-shadow:inset 0 0 42px rgba(0,0,0,.4)}.preview::before{display:none}.preview .watermark{display:none}.preview .cover{position:relative;z-index:1;max-width:83%;max-height:86%;object-fit:contain;filter:brightness(.94) contrast(1.08) drop-shadow(0 24px 28px rgba(0,0,0,.75));transform:rotate(-1.1deg)}.preview .stamp{position:absolute;z-index:4;right:14px;bottom:20px;width:198px;opacity:1;filter:drop-shadow(0 0 20px rgba(255,83,64,.5)) drop-shadow(0 2px 0 rgba(0,0,0,.75));transform:rotate(-8deg)}.preview.locked .cover{opacity:.18}.preview.locked .stamp{display:none}.preview-caption{display:none}
-
-    @media(max-width:1120px){.terminal{grid-template-columns:290px 1fr}.mission-grid{grid-template-columns:1fr 250px;gap:18px}.mission-title{font-size:3.25rem}.preview{min-height:300px}.top strong{font-size:1.08rem}.visual-strip{grid-template-columns:1fr}}
-    @media(max-width:900px){html,body{overflow:auto}.app{height:auto;min-height:100svh;overflow:visible}.terminal{min-height:calc(100svh - 76px);grid-template-columns:1fr}.directory{border-right:0;border-bottom:1px solid var(--soft);min-height:340px}.mission-grid{grid-template-columns:1fr}.preview{height:310px}.file-list{max-height:240px}.top,.foot{font-size:.54rem}.mission-title{font-size:3rem}.boot-panel{padding:22px 18px}.boot-sub{font-size:.78rem}}
-    @media(max-width:640px){.app{padding:10px 10px 12px;grid-template-rows:auto 1fr auto;gap:8px}.top,.foot{white-space:normal;flex-wrap:wrap;row-gap:6px;align-items:flex-start}.top strong{font-size:.98rem}.terminal{border-left:0;border-right:0}.dir-head,.mission-top{height:42px;padding:0 12px}.directory{min-height:300px}.search{margin:10px 10px 8px;height:38px}.search span{font-size:.52rem}.search input{font-size:.64rem}.filters{padding:0 10px 10px;gap:4px}.filter{font-size:.5rem}.file-list{padding:0 10px 10px;max-height:188px}.file-item{min-height:58px;padding:8px 8px}.file-code{font-size:.57rem}.file-name{font-size:.86rem}.mission-grid{padding:16px 14px 18px;gap:16px}.mission-copy{gap:10px}.mission-code{font-size:clamp(1rem,7vw,1.45rem)}.mission-title{font-size:clamp(2rem,12vw,2.9rem)}.mission-sub{font-size:.76rem;max-width:none}.mission-note{padding:10px 0;gap:6px}.note-line{font-size:.75rem}.visual-strip{grid-template-columns:1fr;height:auto;max-width:none}.strip-cell{min-height:44px;padding:8px 10px}.strip-cell small{font-size:.47rem}.strip-cell b{font-size:.7rem}.actions{flex-direction:column;align-items:stretch;gap:10px}.btn,.btn.dark{width:100%;min-width:0;height:46px;padding:0 16px;font-size:.86rem}.preview{height:250px;min-height:250px}.preview .cover{max-width:78%;max-height:82%}.preview .stamp{width:156px;right:8px;bottom:10px}.boot-panel{width:min(100%,calc(100vw - 24px));padding:18px 16px}.boot-logo{gap:10px}.boot-mark{font-size:1rem}.boot-status{font-size:.68rem}}
-    @media(max-width:420px){.top,.foot{font-size:.5rem}.top strong{display:block;margin-bottom:4px}.mission-title{font-size:clamp(1.8rem,12vw,2.55rem)}.preview{height:220px;min-height:220px}.preview .stamp{width:138px}.boot-title{font-size:1.15rem}.boot-sub{font-size:.74rem;line-height:1.45}}
-
-    .boot{position:fixed;inset:0;z-index:120;display:grid;place-items:center;background:linear-gradient(180deg,rgba(4,3,2,.82),rgba(2,1,1,.92));backdrop-filter:blur(1.5px);transition:opacity .45s ease,visibility .45s ease}.boot.hidden{opacity:0;visibility:hidden;pointer-events:none}.boot-panel{width:min(560px,calc(100vw - 40px));border:1px solid rgba(201,170,111,.16);background:linear-gradient(180deg,rgba(9,6,4,.88),rgba(4,3,2,.94));padding:26px 28px;box-shadow:0 20px 60px rgba(0,0,0,.56);position:relative;overflow:hidden}.boot-panel::before{content:"";position:absolute;inset:10px;border:1px solid rgba(201,170,111,.05);pointer-events:none}.boot-logo{display:flex;align-items:center;gap:12px;margin-bottom:14px}.boot-logo img{width:42px;height:42px;object-fit:contain;filter:grayscale(1) brightness(1.08)}.boot-mark{font-family:var(--serif);font-size:1.15rem;letter-spacing:.12em;color:var(--paper)}.boot-kicker{font-family:var(--mono);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;color:var(--paper2);margin-bottom:10px}.boot-title{font-size:clamp(1.35rem,2.7vw,2rem);line-height:1.06;text-transform:uppercase;letter-spacing:.08em;color:var(--paper);margin:0 0 12px}.boot-sub{max-width:460px;margin:0 0 18px;font-family:var(--mono);font-size:.82rem;line-height:1.55;color:#d2be8d}.boot-progress{height:8px;border:1px solid rgba(201,170,111,.16);background:rgba(0,0,0,.36);overflow:hidden;position:relative}.boot-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,rgba(110,52,36,.68),rgba(227,91,77,.82),rgba(201,170,111,.72));transition:width 1.2s cubic-bezier(.2,.7,.2,1)}.boot-status{display:grid;gap:6px;margin-top:14px;font-family:var(--mono);font-size:.72rem;color:#ccb98b}.boot-status div::before{content:"> ";color:var(--blood2)}.boot-skip{margin-top:14px;font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  </style>
+  <link rel="stylesheet" href="css/home.css" />
 </head>
 <body>
 
@@ -80,7 +29,7 @@
     <main class="terminal">
       <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
       <aside class="directory">
-        <div class="dir-head"><span class="label">Diretório</span><span class="subtle" id="entryCount">9 entradas</span></div>
+        <div class="dir-head"><span class="label">Diretório</span><span class="subtle" id="entryCount">carregando</span></div>
         <label class="search"><span>Buscar:</span><input id="search" placeholder="operação, código..." autocomplete="off"></label>
         <div class="filters"><button class="filter" data-filter="all">Todos</button><button class="filter active" data-filter="active">Ativos</button><button class="filter" data-filter="sealed">Lacrados</button></div>
         <div class="file-list" id="fileList"></div>
@@ -89,10 +38,10 @@
         <div class="mission-top"><span class="label">Arquivo selecionado</span></div>
         <div class="mission-grid">
           <div class="mission-copy">
-            <div class="kicker" id="selectedType">Dossiê inicial</div>
-            <div class="mission-code" id="selectedCode">OP-2025-ALB-017</div>
-            <div class="mission-title" id="selectedTitle">Operação Albânia</div>
-            <div class="mission-sub" id="selectedSubtitle">Dossiê inicial lacrado</div>
+            <div class="kicker" id="selectedType">Carregando índice</div>
+            <div class="mission-code" id="selectedCode">--</div>
+            <div class="mission-title" id="selectedTitle">Arquivo central</div>
+            <div class="mission-sub" id="selectedSubtitle">Aguardando dados do índice centralizado.</div>
             <div class="mission-note" id="briefLines"></div>
             <div class="visual-strip" id="visualStrip"></div>
             <div class="actions" id="actions"></div>
@@ -103,27 +52,8 @@
     </main>
     <footer class="foot"><span>Ordo Realitas · proteger a realidade · conter o impossível</span><span>18 mai 2025 · sistema delta v4.7.0</span></footer>
   </div>
-<script>
-const records=[
- {id:'alb',code:'OP-2025-ALB-017',title:'Operação Albânia',kind:'Dossiê inicial',level:'Delta',status:'Lacrado',state:'active',url:'arquivos/operacao-albania/index.html',subtitle:'Primeira triagem para consulta operacional.',lines:['último contato com a equipe foi perdido','consulta completa depende de autenticação local'],strip:[['Nível','Delta',''],['Status','Lacrado','alert'],['Protocolo','Entrada protegida','']]},
- {id:'r1',code:'REG-????-III',title:'Registro indisponível',kind:'Registro',level:'Restrito',status:'Bloqueado',state:'sealed',subtitle:'Entrada indisponível',lines:['conteúdo indisponível para esta credencial','autorização superior necessária']},
- {id:'r2',code:'OP-????-III',title:'Operação velada',kind:'Operacional',level:'Restrito',status:'Bloqueado',state:'sealed',subtitle:'Operação não catalogada',lines:['identificação parcial recuperada','metadados corrompidos']},
- {id:'r3',code:'ARG-????-III',title:'Autorização pendente',kind:'Autorização',level:'Delta',status:'Lacrado',state:'sealed',subtitle:'Documento de autorização',lines:['requisição em espera','assinatura de comando ausente']},
- {id:'r4',code:'TEC-????-III',title:'Dados técnicos',kind:'Relatório',level:'Restrito',status:'Bloqueado',state:'sealed',subtitle:'Dados de contenção',lines:['pacote técnico oculto','protocolo de campo exigido']},
- {id:'r5',code:'CAS-????-III',title:'Caso arquivado',kind:'Registro arquivado',level:'Sigma',status:'Bloqueado',state:'sealed',subtitle:'Caso histórico',lines:['registro histórico preservado','credencial insuficiente']},
- {id:'r6',code:'MEM-0205-III',title:'Memorando interno',kind:'Memorando',level:'Restrito',status:'Bloqueado',state:'sealed',subtitle:'Comunicação interna',lines:['memorando não liberado','destinatário desconhecido']},
- {id:'r7',code:'ANX-████-042',title:'Anexo lacrado',kind:'Anexo',level:'Delta',status:'Lacrado',state:'sealed',subtitle:'Anexo operacional',lines:['anexo vinculado à operação','liberação futura prevista']},
- {id:'r8',code:'LOG-2025-██',title:'Registro corrompido',kind:'Log parcial',level:'Restrito',status:'Corrompido',state:'sealed',subtitle:'Log danificado',lines:['fragmentos recuperados','reconstrução pendente']}
-];
-let selected=records[0],filter='active',term='';
-const list=document.getElementById('fileList'),search=document.getElementById('search');
-function visible(){return records.filter(r=>(filter==='all'||r.state===filter)&&(`${r.code} ${r.title} ${r.kind} ${r.level}`.toLowerCase().includes(term.toLowerCase())))}
-function renderList(){list.innerHTML='';const items=visible();if(!items.find(r=>r.id===selected.id))selected=items[0]||records[0];items.forEach(r=>{const b=document.createElement('button');b.className='file-item '+(r.id===selected.id?'active':'');const badge=(r.id===selected.id)?'<span class="file-badge principal">Principal</span>':'';b.innerHTML=`<span class="dot" aria-hidden="true"></span><div class="file-main"><div class="file-top"><div class="file-code">${r.code}</div>${badge}</div><div class="file-name">${r.title}</div></div>`;b.onclick=()=>{selected=r;render()};list.appendChild(b)});document.getElementById('entryCount').textContent=items.length+' entradas'}
-function render(){renderList();document.getElementById('selectedType').textContent=selected.kind;document.getElementById('selectedCode').textContent=selected.code;document.getElementById('selectedTitle').textContent=selected.title;document.getElementById('selectedSubtitle').textContent=selected.subtitle;document.getElementById('briefLines').innerHTML=selected.lines.map(x=>`<div class="note-line">${x}</div>`).join('');const fallback=[['Estado',selected.status,selected.state==='active'?'':'alert'],['Nível',selected.level,selected.level==='Restrito'?'alert':''],['Consulta','Indisponível','alert']];const strip=selected.strip||fallback;document.getElementById('visualStrip').innerHTML=strip.map(s=>`<div class="strip-cell ${s[2]||''}"><small>${s[0]}</small><b>${s[1]}</b></div>`).join('');document.getElementById('previewBox').classList.toggle('locked',selected.state!=='active');document.getElementById('previewImg').src=selected.id==='alb'?'assets/operacao-albania-thumb-grade.webp':'assets/ordo-mark-blood.png';document.getElementById('actions').innerHTML=selected.state==='active'?`<a class="btn" href="${selected.url}">Entrar no arquivo ›</a>`:`<button class="btn dark" disabled>Registro indisponível</button>`}
-document.querySelectorAll('.filter').forEach(btn=>btn.onclick=()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));btn.classList.add('active');filter=btn.dataset.filter;render()});
-search.addEventListener('input',e=>{term=e.target.value.trim();render()});
-function initBoot(){const boot=document.getElementById('bootScreen');const bar=document.getElementById('bootBar');if(!boot||!bar)return;const seen=sessionStorage.getItem('ordo_boot_home_seen');if(seen==='1'){boot.classList.add('hidden');render();return;}requestAnimationFrame(()=>{bar.style.width='100%';});setTimeout(()=>{boot.classList.add('hidden');sessionStorage.setItem('ordo_boot_home_seen','1');render();},1250);}
-initBoot();
-</script>
+  <script src="data/records.js" defer></script>
+  <script src="js/records-store.js" defer></script>
+  <script src="js/home.js" defer></script>
 </body>
 </html>

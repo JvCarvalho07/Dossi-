@@ -1,12 +1,18 @@
-Mapa de audio integrado na Operacao Albania
+# Mapa de áudio — Operação Albânia v37
 
-ui-click.mp3      -> cliques, botoes, menus
-page-turn.mp3     -> troca de pagina
-uv-switch.mp3     -> ligar/desligar luz UV
-uv-hum.mp3        -> loop baixo enquanto a UV esta ativa, cortado/otimizado a partir do buzz fluorescente
-identity-success.mp3/auth-success.mp3 -> autenticacao concedida
-ui-error.mp3      -> reservado para erro/negacao futura
+Arquivos usados pelo visualizador em `arquivos/operacao-albania/js/viewer.js`.
+A configuração de volume fica centralizada em `arquivos/operacao-albania/data/operation.js`.
 
-Observacao: mantenha as licencas/creditos dos arquivos originais baixados.
+- `ui-click.mp3`: cliques de interface.
+- `page-turn.mp3`: troca de página.
+- `uv-switch.mp3`: ativar/desativar luz UV.
+- `uv-hum.mp3`: loop sutil enquanto a luz UV está ativa.
+- `ambient-base.mp3`: ambiência de fundo iniciada após interação do usuário.
+- `auth-success.mp3`: autenticação concedida.
+- `ui-error.mp3`: erro/acesso negado.
 
-ambient-base.mp3 -> ambiencia de fundo criada pelo usuario; volume baixo (.13), loop continuo, inicia apos a primeira interacao permitida pelo navegador.
+Tratamento mantido:
+- efeitos normalizados com limite de pico para evitar estouro;
+- ambiência reduzida no mix para não cobrir leitura;
+- `uv-hum` mantido baixo e contínuo para funcionar como textura;
+- volume final controlado no objeto `audio` do arquivo de dados da operação.
